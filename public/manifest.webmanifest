@@ -1,0 +1,12 @@
+{
+  "name": "Agamemnon Academic Command",
+  "short_name": "Agamemnon",
+  "description": "Day-order calendar, reminders, notes, study vault, and Odysseus AI.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07111f",
+  "theme_color": "#07111f",
+  "orientation": "portrait-primary",
+  "categories": ["education", "productivity"],
+  "icons": []
+}

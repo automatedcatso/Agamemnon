@@ -1,0 +1,37 @@
+{
+  "name": "agamemnon",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "npm run build && node --test tests/app-source.test.mjs",
+    "lint": "eslint . --ignore-pattern .next"
+  },
+  "dependencies": {
+    "lucide-react": "^0.468.0",
+    "motion": "^12.43.0",
+    "next": "16.2.12",
+    "react": "19.2.6",
+    "react-dom": "19.2.6"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.19",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.39.4",
+    "eslint-config-next": "16.2.6",
+    "typescript": "5.9.3"
+  },
+  "overrides": {
+    "brace-expansion": "5.0.9",
+    "minimatch": "10.2.5",
+    "postcss": "8.5.18",
+    "sharp": "0.35.0"
+  },
+  "type": "module"
+}
