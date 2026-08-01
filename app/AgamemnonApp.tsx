@@ -41,6 +41,7 @@ import {
 import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import materialIndex from "./materials-index.json";
+import { MessageContent } from "./MessageContent";
 import {
   academicEvents,
   dayOrderTimetable,
@@ -542,7 +543,7 @@ function CalendarView({
           <div className="selected-day-card">
             <span>{displayDate(selected, { weekday: "long" }).toUpperCase()}</span><strong>{selectedDate.getDate()}</strong><h3>{selectedEvent?.title ?? (manualHolidays.includes(selected) ? "Personal holiday" : selectedOrder ? `Day Order ${selectedOrder}` : selectedDate.getDay() === 0 ? "Sunday" : "Open day")}</h3>
             {selectedOrder && <p>{dayOrderTimetable[selectedOrder].length} classes scheduled</p>}
-            {selectedDate.getDay() === 6 && <p>STEP · 12:30 PM–4:30 PM</p>}
+            {selectedDate.getDay() === 6 && <p>STEP · 1:00 PM–5:00 PM</p>}
             {selectedTasks.map((task) => <p key={task.id}>{task.title}</p>)}
             {!officialHolidayDates.has(selected) && selected >= semesterStart && selected <= semesterEnd && <button className={manualHolidays.includes(selected) ? "danger-outline" : "secondary-button"} onClick={toggleHoliday}>{manualHolidays.includes(selected) ? "Remove holiday" : "Mark as holiday"}</button>}
             {officialHolidayDates.has(selected) && <div className="official-chip"><ShieldCheck size={15} /> Official holiday</div>}
@@ -568,7 +569,7 @@ function CalendarView({
                     {order && <b className="do-chip">DO {order}</b>}
                     {event && <i className={`event-chip ${event.kind}`}>{event.title}</i>}
                     {isManual && !event && <i className="event-chip holiday">Personal holiday</i>}
-                    {date.getDay() === 6 && key >= semesterStart && key <= semesterEnd && <i className="event-chip step">STEP · 12:30</i>}
+                    {date.getDay() === 6 && key >= semesterStart && key <= semesterEnd && <i className="event-chip step">STEP · 1:00</i>}
                     {dayTasks.slice(0, 2).map((task) => <i className="event-chip task" key={task.id}>{task.title}</i>)}
                   </button>
                 );
@@ -634,7 +635,7 @@ function TimetableView({ now, todayKey, manualHolidays, openCalendar }: { now: D
             {(() => {
               const subject = subjectFor("step");
               const progress = classProgress(saturdayStep, now, now.getDay() === 6);
-              return <article className="timetable-class" style={{ "--subject": subject.accent } as React.CSSProperties}><div className="class-topline"><span>12:30–16:30</span></div><h3>STEP Class</h3><p>4-hour Saturday block</p><div className="class-progress-label"><span>{progress.label}</span><span>{Math.round(progress.value)}%</span></div><ProgressLine value={progress.value} color={subject.accent} /></article>;
+              return <article className="timetable-class" style={{ "--subject": subject.accent } as React.CSSProperties}><div className="class-topline"><span>13:00–17:00</span></div><h3>STEP Class</h3><p>4-hour Saturday block</p><div className="class-progress-label"><span>{progress.label}</span><span>{Math.round(progress.value)}%</span></div><ProgressLine value={progress.value} color={subject.accent} /></article>;
             })()}
             <div className="free-window-group"><span>BEFORE &amp; AFTER STEP</span>{freeWindows([saturdayStep], "08:00", "18:10").map((window) => <article className="free-window" key={`step-${window.start}`}><Timer size={15} /><p><strong>{formatClock(window.start)}–{formatClock(window.end)}</strong><small>Free slot</small></p></article>)}</div>
           </div>
@@ -907,7 +908,7 @@ function OdysseusView({ initialPrompt }: { initialPrompt: string }) {
         <div ref={scrollRef} className="chat-scroll" data-testid="chat-scroll">
           {messages.length === 1 && <div className="chat-intro"><div className="large-orb"><Sparkles /></div><span>WISE COUNSEL, CLEAR ACTION</span><h1>How can I help you conquer today?</h1><p>I can search all {materialIndex.length} files, analyse an uploaded image, use current web sources, and turn the answer into a study plan.</p><div className="prompt-grid">{suggestions.map((suggestion) => <button key={suggestion} onClick={() => void sendMessage(suggestion)} disabled={thinking}><Sparkles size={16} />{suggestion}<ArrowUpRight size={15} /></button>)}</div></div>}
           <div className="messages" aria-live="polite">
-            {messages.map((message) => <div className={`message ${message.role}`} key={message.id}>{message.role === "assistant" && <div className="message-avatar">Ο</div>}<div className="message-bubble">{message.notice && <div className="message-notice"><ShieldCheck size={15} />{message.notice}</div>}<p>{message.content}</p>{message.sources && message.sources.length > 0 && <div className="message-sources"><span>SOURCES</span>{message.sources.map((source) => <a href={source.url} target="_blank" rel="noreferrer" key={source.url}>{source.title}<ArrowUpRight size={13} /></a>)}</div>}</div></div>)}
+            {messages.map((message) => <div className={`message ${message.role}`} key={message.id}>{message.role === "assistant" && <div className="message-avatar">Ο</div>}<div className="message-bubble">{message.notice && <div className="message-notice"><ShieldCheck size={15} />{message.notice}</div>}{message.role === "assistant" ? <MessageContent content={message.content} /> : <p className="plain-message">{message.content}</p>}{message.sources && message.sources.length > 0 && <div className="message-sources"><span>SOURCES</span>{message.sources.map((source) => <a href={source.url} target="_blank" rel="noreferrer" key={source.url}>{source.title}<ArrowUpRight size={13} /></a>)}</div>}</div></div>)}
             {thinking && <div className="message assistant"><div className="message-avatar">Ο</div><div className="thinking"><i /><i /><i /><span>Odysseus is searching the campaign...</span></div></div>}
             <div ref={endRef} />
           </div>

@@ -88,8 +88,8 @@ export const saturdayStep = session(
   "step",
   "STEP Class",
   "STEP",
-  "12:30",
-  "16:30",
+  "13:00",
+  "17:00",
   "STEP Hall",
 );
 
